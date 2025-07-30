@@ -1,0 +1,6 @@
+# Python cache folders
+__pycache__/
+# ENV
+.env
+# logs
+app.log
