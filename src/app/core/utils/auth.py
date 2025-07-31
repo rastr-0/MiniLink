@@ -1,5 +1,7 @@
 # annotations
 from typing import Annotated
+
+from sqlalchemy.exc import SQLAlchemyError
 # SQLAlchemy ORM
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.app.core.db.database import get_db
@@ -12,14 +14,17 @@ from fastapi.security import OAuth2PasswordBearer
 # security
 import jwt
 from jwt import InvalidTokenError
-from src.app.core.security import verify_password
+from src.app.core.utils.security import verify_password
 # logging
 from src.app.core.logger import internal_logger
 # others
 from os import getenv
 from datetime import timedelta, timezone, datetime
-
+# schemas
 from src.app.schemas import TokenData, UserResponse
+# exceptions
+from src.app.core import exceptions
+from jwt import InvalidKeyError, PyJWTError
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -32,10 +37,16 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     else:
         # if not, then default time is 30 minutes
         expires = datetime.now(timezone.utc) + timedelta(minutes=30)
-
-    to_encode.update({"expiration": str(expires)})
-    encoded_jwt = jwt.encode(to_encode, getenv("SECRET_KEY"), getenv("ALGORITHM"))
-    internal_logger.info(f"Access token was successfully formed for user: {data['sub']}")
+    try:
+        to_encode.update({"expiration": str(expires)})
+        encoded_jwt = jwt.encode(to_encode, getenv("SECRET_KEY"), getenv("ALGORITHM"))
+        internal_logger.info(f"Access token was successfully formed for user: {data['sub']}")
+    except InvalidKeyError as e:
+        raise exceptions.TokenCreationError("Missing 'sub' in token data") from e
+    except PyJWTError as e:
+        raise exceptions.TokenCreationError("Failed to create JWT token") from e
+    except Exception as e:
+        raise exceptions.TokenCreationError("Failed to create JWT token due to unkown error") from e
 
     return encoded_jwt
 
@@ -46,10 +57,7 @@ async def authenticate_user(
 ):
     user = await get_existing_user(db, username)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Could not find your user in the system"
-        )
+        raise SQLAlchemyError(f"Could not find user: {username} in the database")
     if verify_password(password, user.hasshed_password):
         return user
     return None
@@ -82,5 +90,5 @@ async def get_current_user(
 
     return UserResponse(
         username=user.username,
-        created_at=datetime.now()
+        created_at=datetime.now(timezone.utc)
     )
