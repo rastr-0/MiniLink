@@ -30,25 +30,8 @@ LOGGING_CONFIG = {
             "filename": "app.log"
         },
     },
-    "loggers": {
-        "Database": {
-            "handlers": ["console", "file"],
-            "level": "DEBUG",
-            "propagate": False
-        },
-        "Request": {
-            "handlers": ["console", "file"],
-            "level": "DEBUG",
-            "propagate": False
-        },
-        "InternalLogger": {
-            "handlers": ["console", "file"],
-            "level": "DEBUG",
-            "propagate": False
-        }
+    "root": {
+        "handlers": ["console", "file"],
+        "level": "DEBUG",
     }
 }
-
-db_logger = logging.getLogger("Database")
-requests_logger = logging.getLogger("Request")
-internal_logger = logging.getLogger("InternalLogger")
