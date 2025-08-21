@@ -49,7 +49,7 @@ class ShortenResponse(BaseModel):
         default=None
     )
     created_by_user: str = Field(
-        description="ID of the user that generated link"
+        description="Username of the user that generated link"
     )
 
     model_config = ConfigDict(
@@ -66,20 +66,35 @@ class ShortenResponse(BaseModel):
     )
 
 
+class ShortResponseList(BaseModel):
+    short_urls: list[ShortenResponse] = Field()
+
+
 class StatsResponse(BaseModel):
     original_url: str
     clicks: int
 
 
-class UserRequest(BaseModel):
+class UserBase(BaseModel):
+    """Base model for user related operations"""
+    username: str | None = None
+    fullname: str | None = None
+
+
+class UserRequest(UserBase):
     username: str
     fullname: str
     password: str
 
 
-class UserResponse(BaseModel):
-    username: str
+class UserResponse(UserBase):
+    id: int
     created_at: datetime
+
+
+class UserUpdate(UserBase):
+    """Derived from UserBase without changing, because all the fields are already optional"""
+    pass
 
 
 class Token(BaseModel):
@@ -89,3 +104,15 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: str
+
+
+class LinkFilters(BaseModel):
+    """Filter model for GET endpoint"""
+    limit: int = 10
+    offset: int = 0
+    max_clicks: int | None = None
+    min_clicks: int | None = None
+    active: bool | None = None
+    one_time_only: bool | None = None
+    created_after: datetime | None = None
+    created_before: datetime | None = None
