@@ -14,7 +14,7 @@ from fastapi.security import OAuth2PasswordBearer
 # security
 import jwt
 from jwt import InvalidTokenError
-from src.app.core.utils.security import verify_password
+from src.app.core.utils import verify_password
 # logging
 from src.app.core.logger import internal_logger
 # others
@@ -26,7 +26,7 @@ from src.app.schemas import TokenData, UserResponse
 from src.app.core import exceptions
 from jwt import InvalidKeyError, PyJWTError
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/v1/token")
 
 
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
@@ -89,6 +89,7 @@ async def get_current_user(
     internal_logger.info(f"Information about user: {user.username} successfully retrieved")
 
     return UserResponse(
+        id=user.id,
         username=user.username,
         created_at=datetime.now(timezone.utc)
     )
