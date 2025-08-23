@@ -2,11 +2,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 from typing import Annotated
 from sqlalchemy.ext.asyncio import AsyncSession
+import logging
 
 from src.app.core.db.database import get_db
 from src.app.core import exceptions
 from src.app.services.url_service import get_original_url, collect_statistic
-from src.app.core.logger import requests_logger
+
+logger = logging.getLogger(__name__)
 
 public_router = APIRouter()
 
@@ -31,16 +33,13 @@ async def redirect(
     try:
         long_url: str = await get_original_url(short_code, db)
     except exceptions.ShortUrlNotFound:
+        logger.exception(f"Short code {short_code} not found")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Unable to find redirection for given URL. Try adding URL first"
         )
-    except exceptions.InvalidShortUrl:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Unable to redirect with the given URL. Try checking the format"
-        )
     except exceptions.ShortUrlServiceUnavailable:
+        logger.exception(f"Short code {short_code} service was unavailable (Database related error)")
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="URL shortening service currently unavailable. Try again later"
