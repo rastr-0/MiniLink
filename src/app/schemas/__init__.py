@@ -72,6 +72,7 @@ class ShortResponseList(BaseModel):
 
 class StatsResponse(BaseModel):
     original_url: str
+    short_code: str
     clicks: int
 
 

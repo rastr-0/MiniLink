@@ -108,6 +108,7 @@ async def statistics(
 
     return StatsResponse(
         original_url=statistic['original_url'],
+        short_code=statistic['short_code'],
         clicks=statistic['clicks']
     )
 

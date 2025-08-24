@@ -49,3 +49,7 @@ class InvalidShortUrl(URLError):
 class ShortUrlServiceUnavailable(URLError):
     """Raised when the problem is on the server side with the service"""
     pass
+
+
+class ShortUrlExpired(URLError):
+    pass

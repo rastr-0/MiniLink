@@ -60,6 +60,13 @@ async def get_original_url(short_code: str, db: AsyncSession) -> str:
     if original_url is None:
         logger.warning(f"No URL found for short_code={short_code}")
         raise exceptions.ShortUrlNotFound(short_code)
+    if original_url.expiration_time is not None:
+        if original_url.expiration_time > datetime.now(timezone.utc):
+            logger.warning(f"No URL found for short_code={short_code}")
+            raise exceptions.ShortUrlExpired()
+    elif (datetime.now(timezone.utc) - original_url.created_at) > timedelta(hours=3):
+        logger.warning(f"No URL found for short_code={short_code}")
+        raise exceptions.ShortUrlExpired()
 
     return original_url.long_url
 
@@ -88,7 +95,11 @@ async def get_statistic(short_code: str, current_user: UserResponse, db: AsyncSe
         logger.exception(f"User doesn't have permission to view {original_url} (user={current_user.username})")
         raise exceptions.PermessionDeniedError()
 
-    return {"original_url": original_url.long_url, "clicks": original_url.clicks}
+    return {
+        "original_url": original_url.long_url,
+        "short_code": original_url.short_code,
+        "clicks": original_url.clicks
+    }
 
 
 async def get_short_links(filters: LinkFilters, db: AsyncSession, user_id: int) -> list[ShortURL]:
