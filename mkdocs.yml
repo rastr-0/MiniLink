@@ -1,0 +1,19 @@
+site_name: MiniLink API
+site_description: Documentation for the WazowskiList backend API
+site_author: Roman Milko
+repo_url: https://github.com/rastr-0/MiniLink/
+theme:
+  name: terminal
+  palette: pink
+  features:
+    - navigation.tabs
+    - navigation.top
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
