@@ -25,6 +25,9 @@ jobs:
         run: |
           pip install mkdocs mkdocs-terminal
 
+      - name: Build documentation
+        run: mkdocs build --force
+
       - name: Build and Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
