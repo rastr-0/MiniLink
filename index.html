@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="generator" content="mkdocs-1.6.1, mkdocs-terminal-4.7.0">
+    
+    <meta name="description" content="Documentation for the WazowskiList backend API"> 
+    
+    <meta name="author" content="Roman Milko"> 
+    <link rel="icon" type="image/png" sizes="192x192" href="img/android-chrome-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="img/android-chrome-512x512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+<link rel="shortcut icon" type="image/png" sizes="48x48" href="img/favicon.ico" />
+<link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+
+
+    
+ 
+<title>Home - MiniLink API</title>
+
+
+<link href="css/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+<link href="css/fontawesome/css/solid.min.css" rel="stylesheet">
+<link href="css/normalize.css" rel="stylesheet">
+<link href="css/terminal.css" rel="stylesheet">
+<link href="css/theme.css" rel="stylesheet">
+<link href="css/theme.tile_grid.css" rel="stylesheet">
+<link href="css/theme.footer.css" rel="stylesheet">
+<!-- pink color palette -->
+<link href="css/palettes/pink.css" rel="stylesheet">
+
+<!-- page layout -->
+<style>
+/* initially set page layout to a one column grid */
+.terminal-mkdocs-main-grid {
+    display: grid;
+    grid-column-gap: 1.4em;
+    grid-template-columns: auto;
+    grid-template-rows: auto;
+}
+
+/*  
+*   when side navigation is not hidden, use a two column grid.  
+*   if the screen is too narrow, fall back to the initial one column grid layout.
+*   in this case the main content will be placed under the navigation panel. 
+*/
+@media only screen and (min-width: 70em) {
+    .terminal-mkdocs-main-grid {
+        grid-template-columns: 4fr 9fr;
+    }
+}</style>
+
+
+
+     
+    
+    
+
+    
+    <!-- search css support -->
+<link href="css/search/bootstrap-modal.css" rel="stylesheet">
+<!-- search scripts -->
+<script>
+    var base_url = ".",
+    shortcuts = "{}";
+</script>
+<script src="js/jquery/jquery-1.10.1.min.js" defer></script>
+<script src="js/bootstrap/bootstrap.min.js" defer></script>
+<script src="js/mkdocs/base.js" defer></script>
+    
+    
+    
+    
+    <script src="search/main.js"></script>
+    
+
+    
+</head>
+
+<body class="terminal"><div class="container">
+    <div class="terminal-nav">
+        <header class="terminal-logo">
+            <div id="mkdocs-terminal-site-name" class="logo terminal-prompt"><a href="/" class="no-style">MiniLink API</a></div>
+        </header>
+        
+        <nav class="terminal-menu">
+            
+        </nav>
+    </div>
+</div>
+        
+    <div class="container">
+        <div class="terminal-mkdocs-main-grid"><aside id="terminal-mkdocs-side-panel"><nav>
+  
+</nav><hr>
+<nav>
+    <ul>
+        <li><a href="#minilink-api">MiniLink API</a></li>
+        <li><a href="#authentication-user-management">🔑 Authentication &amp; User Management</a></li>
+        <li><a href="#1-register-a-new-user">1. Register a New User</a></li><li><a href="#2-login-get-token">2. Login (Get Token)</a></li><li><a href="#3-get-current-user">3. Get Current User</a></li><li><a href="#urls-management-private">✅ URLs Management (private)</a></li>
+        <li><a href="#1-create-a-short-url">1. Create a Short URL</a></li><li><a href="#2-get-statistics-for-a-short-url">2. Get Statistics for a Short URL</a></li><li><a href="#3-list-user-short-urls">3. List User Short URLs</a></li><li><a href="#4-delete-a-short-url">4. Delete a Short URL</a></li><li><a href="#urls-management-public">✅ URLs Management (public)</a></li>
+        <li><a href="#1-redirect-user">1. Redirect User</a></li>
+    </ul>
+</nav>
+</aside>
+            <main id="terminal-mkdocs-main-content">
+<section id="mkdocs-terminal-content">
+    <h1 id="minilink-api">MiniLink API<a class="headerlink" href="#minilink-api" title="Permanent link">&para;</a></h1>
+<p>Welcome to the <strong>MiniLink API</strong> documentation 👋</p>
+<p>This project provides a simple <strong>URL shortening service</strong> backend with authentication, links management, and token-based
+security.</p>
+<hr />
+<h1 id="authentication-user-management">🔑 Authentication &amp; User Management<a class="headerlink" href="#authentication-user-management" title="Permanent link">&para;</a></h1>
+<h2 id="1-register-a-new-user">1. Register a New User<a class="headerlink" href="#1-register-a-new-user" title="Permanent link">&para;</a></h2>
+<p><strong>POST</strong> <code>/api/v1/register</code></p>
+<p>Register a new user in the system.</p>
+<p><strong>Request:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daddy-o&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;fullname&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mypassword123&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Response (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daddy-o&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-20T14:22:10Z&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>409 Conflict</code> → User already exists</li>
+<li><code>500 Internal Server Error</code> → Database or service failure</li>
+</ul>
+<hr />
+<h2 id="2-login-get-token">2. Login (Get Token)<a class="headerlink" href="#2-login-get-token" title="Permanent link">&para;</a></h2>
+<p><strong>POST</strong> <code>/api/v1/register</code></p>
+<p>Authenticates a user and returns a JWT token for subsequent requests.</p>
+<p><strong>Request (Form-encoded, not JSON!):</strong></p>
+<div class="codehilite"><pre><span></span><code>username=daddy-o
+password=mypassword123
+</code></pre></div>
+
+<p><strong>Response (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;access_token&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzI1NiIs...&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;token_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bearer&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>401 Unauthorized</code> → Wrong credentials given</li>
+<li><code>404 Not Found</code> → User not found</li>
+<li><code>500 Internal Server Error</code> → Database or service failure</li>
+</ul>
+<hr />
+<h2 id="3-get-current-user">3. Get Current User<a class="headerlink" href="#3-get-current-user" title="Permanent link">&para;</a></h2>
+<p><strong>GET</strong> <code>/api/v1/me</code></p>
+<p>Returns the profile of the currently authenticated user.</p>
+<p><strong>Headers:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="n">Authorization</span><span class="o">:</span><span class="w"> </span><span class="n">Bearer</span><span class="w"> </span><span class="o">&lt;</span><span class="n">JWT_TOKEN</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p><strong>Resonse (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;daddy-o&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-20T14:22:10Z&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>401 Unauthorized</code> → Missing or invalid token</li>
+</ul>
+<hr />
+<h1 id="urls-management-private">✅ URLs Management (private)<a class="headerlink" href="#urls-management-private" title="Permanent link">&para;</a></h1>
+<p>Endpoints for managing user short links: create, fetch statistics, list, and delete.</p>
+<h2 id="1-create-a-short-url">1. Create a Short URL<a class="headerlink" href="#1-create-a-short-url" title="Permanent link">&para;</a></h2>
+<p><strong>POST</strong> <code>/api/v1/shorten</code></p>
+<p>Create a new short URL for an authenticated user.</p>
+<p><strong>Request:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;original_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/very/long/url&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;custom_alias&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myalias&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;single_use&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Response (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;short_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8000/myalias&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;short_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myalias&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-20T14:30:00&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;expiration_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-25T12:00:00&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;created_by_user&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;john&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>409 Conflict</code> → Alias already taken</li>
+<li><code>500 Internal Server Error</code> → Service unavailable</li>
+</ul>
+<hr />
+<h2 id="2-get-statistics-for-a-short-url">2. Get Statistics for a Short URL<a class="headerlink" href="#2-get-statistics-for-a-short-url" title="Permanent link">&para;</a></h2>
+<p><strong>GET</strong> <code>api/v1/stats/{short_code}</code></p>
+<p>Fetch statistics for a given short URL by its code.</p>
+<p><strong>Response (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;original_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/very/long/url&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;short_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myalias&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;clicks&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>404 Not Found</code> → Short URL is not present</li>
+<li><code>403 Forbidden</code> → Permission denied</li>
+</ul>
+<hr />
+<h2 id="3-list-user-short-urls">3. List User Short URLs<a class="headerlink" href="#3-list-user-short-urls" title="Permanent link">&para;</a></h2>
+<p><strong>GET</strong> <code>api/v1/my/urls</code></p>
+<p>Retrieve all short URLs created by the authenticated user.
+Supports optional filters.</p>
+<p><strong>Query parameters:</strong></p>
+<ul>
+<li><code>limit</code> (int) → Maximum number of results</li>
+<li><code>offset</code> (int) → Offset for pagination</li>
+<li><code>max_clicks</code> (int) → Maximum required clicks</li>
+<li><code>min_clicks</code> (int) → Minimum required clicks</li>
+<li><code>active</code> (bool) → Filter active links only</li>
+<li><code>one_time_only</code> (bool) → Filter single-use links</li>
+<li><code>created_after</code> (str) → Filter by creation date (after)</li>
+<li><code>created_before</code> (str) → Filter by creation date (before)</li>
+</ul>
+<p><strong>Response (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;short_urls&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;short_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8000/myalias&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;short_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;myalias&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-20T14:30:00&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expiration_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-25T12:00:00&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created_by_user&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;john&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;short_url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;http://localhost:8000/abcd123&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;short_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abcd123&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-20T15:00:00&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;expiration_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-08-21T15:00:00&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;created_by_user&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;john&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>500 Internal Server Error</code> → Service unavailable</li>
+</ul>
+<hr />
+<h2 id="4-delete-a-short-url">4. Delete a Short URL<a class="headerlink" href="#4-delete-a-short-url" title="Permanent link">&para;</a></h2>
+<p><strong>DELETE</strong> <code>api/v1/{short_code}</code></p>
+<p>Delete a short URL owned by the authenticated user.</p>
+<p><strong>Response (200 OK):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;4&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;result&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;successfully deleted&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>404 Not Found</code> → Short URL not found</li>
+</ul>
+<hr />
+<h1 id="urls-management-public">✅ URLs Management (public)<a class="headerlink" href="#urls-management-public" title="Permanent link">&para;</a></h1>
+<p>Public endpoints for redirection.</p>
+<h2 id="1-redirect-user">1. Redirect User<a class="headerlink" href="#1-redirect-user" title="Permanent link">&para;</a></h2>
+<p>GET <code>/{short_code}</code></p>
+<p>Redirects the client from the short URL to the original destination.</p>
+<p><strong>Response (307 Temporary Redirect)</strong>: redirects to the original URL.</p>
+<p><strong>Errors:</strong></p>
+<ul>
+<li><code>404 Not Found</code> → Short URL not found</li>
+<li><code>503 Service Unavailable</code> → Service unavailable</li>
+</ul>
+<hr />
+</section>
+
+            </main>
+        </div>
+        <hr><footer>
+    <div class="terminal-mkdocs-footer-grid">
+        <div id="terminal-mkdocs-footer-copyright-info">
+             Site built with <a href="http://www.mkdocs.org">MkDocs</a> and <a href="https://github.com/ntno/mkdocs-terminal">Terminal for MkDocs</a>.
+        </div>
+    </div>
+</footer>
+    </div>
+
+    
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="alertdialog" aria-modal="true" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog modal-lg" role="search">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                <button type="button" class="close btn btn-default btn-ghost" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p id="searchInputLabel">Type to start searching</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" aria-labelledby="searchInputLabel" placeholder="" id="mkdocs-search-query" title="Please enter search terms here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No document matches found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    
+    
+</body>
+
+</html>
