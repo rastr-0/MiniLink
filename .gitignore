@@ -6,3 +6,5 @@ __pycache__/
 app.log
 # IDE related
 .idea/
+# generated website for docs
+site/
