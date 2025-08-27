@@ -16,7 +16,7 @@ class ShortURL(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     clicks: Mapped[int] = mapped_column(default=0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
-    expiration_time: Mapped[DateTime | None] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
+    expiration_time: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True, default=None)
 
     user: Mapped["User"] = relationship(back_populates="short_urls")
 
