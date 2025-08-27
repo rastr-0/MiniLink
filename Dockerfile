@@ -1,16 +1,14 @@
 FROM python:3.10-slim
 
-RUN apt-get update && apt-get install -y git build-essential && rm -rf /var/lib/apt/lists/*
+RUN pip install poetry
 
 WORKDIR /docker_app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml poetry.lock ./
 
-COPY src /docker_app/src
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi
 
-ENV PYTHONPATH=/docker_app
+COPY . .
 
-EXPOSE 8000
-
-CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["poetry", "run", "uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
