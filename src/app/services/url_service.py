@@ -21,12 +21,17 @@ async def create_short_url(data: ShortenRequest, current_user: UserResponse, d_c
             raise exceptions.CustomAliasAlreadyExists()
         short_code = data.custom_alias
     else:
-        while True:
+        # trying to generate not taken code in 20 attempts
+        for _ in range(20):
             candidate = generate_short_code(str(data.original_url))
             logger.debug(f"Looking for the candidate short code: {candidate} (user={current_user.username})")
             if not await operations.get_link_by_code(d_conn, candidate):
                 short_code = candidate
                 break
+        else:
+            # in case short code was not generated in 20 attempts,
+            # which is highly unlikely, then service unavailable will be raised
+            raise exceptions.ShortUrlServiceUnavailable()
     try:
         link = await operations.create_short_link(
             d_conn,
@@ -60,12 +65,13 @@ async def get_original_url(short_code: str, db: AsyncSession) -> str:
     if original_url is None:
         logger.warning(f"No URL found for short_code={short_code}")
         raise exceptions.ShortUrlNotFound(short_code)
+    now = datetime.now(timezone.utc)
     if original_url.expiration_time is not None:
-        if original_url.expiration_time > datetime.now(timezone.utc):
-            logger.warning(f"No URL found for short_code={short_code}")
+        if original_url.expiration_time < now:
+            logger.warning(f"Short URL with the short_code={short_code} expired")
             raise exceptions.ShortUrlExpired()
-    elif (datetime.now(timezone.utc) - original_url.created_at) > timedelta(hours=3):
-        logger.warning(f"No URL found for short_code={short_code}")
+    elif (now - original_url.created_at) > timedelta(hours=3):
+        logger.warning(f"Short URL with the short_code={short_code} expired")
         raise exceptions.ShortUrlExpired()
 
     return original_url.long_url
